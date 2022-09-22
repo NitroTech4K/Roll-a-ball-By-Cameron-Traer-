@@ -9,6 +9,9 @@ public class PlayerController : MonoBehaviour
     public float speed = 0;
     public TextMeshProUGUI countText;
     public GameObject winTextObject;
+    public GameObject rock;
+    public GameObject rockdestroytext;
+    public int jumpforce = 1;
 
     private Rigidbody rb;
     private int count;
@@ -23,6 +26,8 @@ public class PlayerController : MonoBehaviour
 
         SetCountText();
         winTextObject.SetActive(false);
+
+        Physics.gravity = new Vector3(0,-30.0f,0);
     }
 
     void OnMove(InputValue movementValue)
@@ -36,9 +41,13 @@ public class PlayerController : MonoBehaviour
     void SetCountText()
     {
         countText.text = "Count: " + count.ToString();
-        if(count>= 12)
+        if(count >= 12)
         {
-            winTextObject.SetActive(true);
+            //winTextObject.SetActive(true);
+            
+            rockdestroytext.SetActive(true);
+            Invoke("hiderocktext", 5.0f);
+            rock.SetActive(false);
         }
     }
 
@@ -49,6 +58,19 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(movement * speed);
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown("space"))
+        {
+            Jump();
+        }
+    }
+
+    void hiderocktext()
+    {
+        rockdestroytext.SetActive(false);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.CompareTag("PickUp"))
@@ -57,6 +79,16 @@ public class PlayerController : MonoBehaviour
             count = count + 1;
 
             SetCountText();
+        }
+    }
+
+    void Jump()
+    {
+        bool Grounded;
+        Grounded = Physics.Raycast(transform.position, Vector3.down, 0.71f);
+        if (Grounded == true)
+        {
+            rb.AddForce(new Vector3(0, 800, 0));
         }
     }
 }
