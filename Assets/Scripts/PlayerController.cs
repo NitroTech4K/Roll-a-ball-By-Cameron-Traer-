@@ -18,6 +18,19 @@ public class PlayerController : MonoBehaviour
     private float movementX;
     private float movementY;
 
+
+    // For global timer?
+
+    //private float globalTimer = float.MaxValue;
+
+    //private float RumbleTime = 1;
+    
+
+    
+
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -60,6 +73,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        //globalTimer -= Time.deltaTime;
+
         if (Input.GetKeyDown("space") || Input.GetKeyDown("joystick button 0"))
         {
             Jump();
